@@ -1,0 +1,57 @@
+nav {
+    width: 5rem; 
+    height: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+
+    background-color: #ffffff;
+    transition: width 0.3s ease-in-out;
+    overflow: hidden;
+    
+  }
+  
+  nav:hover {
+    width: 20rem; 
+  }
+  
+  nav:hover .item .text{
+    opacity: 1;
+  }
+
+  nav .item .icon {
+    opacity: 1;
+  }
+  
+  hr {
+    height: 1px;
+    color: #919191;
+    margin: 15px 0;
+  }
+  
+  .item {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .item .text {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    transition-delay: 0.2s;
+    margin-left: 15px;
+    white-space: nowrap;
+}
+  .item .icon {
+    width: 40px;
+    height: 35px;
+    flex-shrink: 0;
+    fill: #424242;
+  }
+  
+  .item .text {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    transition-delay: 0.2s;
+    margin-left: 15px;
+    white-space: nowrap;
+  }
