@@ -4,3 +4,4 @@ const isLoggedIn = (): boolean => {
 };
 
 export default isLoggedIn;
+

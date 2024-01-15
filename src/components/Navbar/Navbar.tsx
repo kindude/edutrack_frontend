@@ -17,11 +17,12 @@ const Navbar: React.FC = () => {
             </div>
             <div className="item">
                 <img className="icon" src={require('../../assets/navbar_icons/ic_launcher_adaptive_fore.png')} />
-                <div className="text">Search</div>
+                <div className="text"><a href='/modules'>Modules</a></div>
             </div>
+            
             <div className="item">
                 <img className="icon" src={require('../../assets/navbar_icons/ic_launcher_adaptive_fore.png')} />
-                <div className="text">Insights</div>
+                <div className="text"><Link to='/performance'>Performance</Link></div>
             </div>
             <div className="item">
                 <img className="icon" src={require('../../assets/navbar_icons/ic_launcher_adaptive_fore.png')}/>
