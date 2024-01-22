@@ -1,5 +1,3 @@
-import React from 'react';
-import logo from '../logo.svg'
 import '../styles/App.css';
 import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import LoginPage from './Login';
@@ -19,6 +17,9 @@ import isLoggedIn from '../utils/checkToken';
 import AllModules from './AllModules';
 import Home from './Home';
 import EnrollUser from './EnrollUser';
+import UpdateProfile from './UpdateProfile';
+import AddOrEditPost from './AddOrEditPost';
+import News from './News';
 
 
 
@@ -45,6 +46,9 @@ function App() {
                 <Route path='/performance' element={<Performance />} />
                 <Route path='/admin/modules' element={<AllModules />} />
                 <Route path='/admin/enroll-user' element={<EnrollUser/>} />
+                <Route path='/profile/update/:userId' element={<UpdateProfile/>}/>
+                <Route path='/module/:id/posts/new' element={<AddOrEditPost/>}/>
+                <Route path='/news' element={<News/>}/>
                 <Route path='/' element={<Home/>} />
               </Routes>
             </div>

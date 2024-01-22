@@ -16,77 +16,42 @@ const Header: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get('users/me');
-        setRole(response.data.role);
-        localStorage.setItem('role', JSON.stringify(response.data.role));
-        localStorage.setItem('id', JSON.stringify(response.data.id));
-
-      } catch (error) {
-
+        
+        if (response && response.data) {
+          setRole(response.data.role);
+          localStorage.setItem('role', JSON.stringify(response.data.role));
+          localStorage.setItem('id', JSON.stringify(response.data.id));
+        }
+      } catch (error: any) {
+      
       }
     };
-
+  
     fetchData();
   }, [navigate]);
 
 
-  const handleLogout = async () => {
-    try {
-      const response = await axiosInstance.post('/auth/logout', null, {
-        withCredentials: true,
-      });
-      if (response.status == 200) {
-        localStorage.clear();
-        document.cookie = 'refreshToken' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        navigate('/');
-        window.location.reload();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-  let isRefreshing = false;
-let isRedirected = false; 
-
-const interceptor = axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-
-    if ((error.response && error.response.status === 401 || error.response.status === 403) && !isRefreshing) {
-      isRefreshing = true;
-      let isError = 0;
-
+  const handleLogoutHeader = async () => {
       try {
-        const tokenResponse = await axiosInstance.post('/auth/refresh');
+        const response = await axiosInstance.post('/auth/logout', null, {
+          withCredentials: true,
+        });
+        if (response.status == 200) {
+          localStorage.removeItem('id');
+          localStorage.removeItem('role');
+          localStorage.removeItem('token');
 
-        if (tokenResponse.status === 401) {
-          throw new Error('Unauthorized');
-        } else {
-          const token = tokenResponse.data['token'];
-          axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          originalRequest.headers.Authorization = `Bearer ${token}`;
-          isRefreshing = false;
-          localStorage.setItem('token', tokenResponse.data['token']);
-          return axiosInstance(originalRequest);
+          document.cookie = 'refresh_token' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          axiosInstance.defaults.headers['Authorization'] = `Bearer `;
+          window.location.reload();
         }
-      } catch (refreshError) {
-        console.error('Token refresh failed:', refreshError);
-        localStorage.clear();
-        isRefreshing = false;
-        isError += 1 ;
+      } catch (error) {
+        console.log(error);
       }
+      navigate('/');
+      
+    };
 
-      if (isError === 1 && !isRedirected) {
-        // navigate('/login');
-        isRedirected = true; 
-      }
-    }
-
-    return Promise.reject(error);
-  }
-);
 
 
   return (
@@ -98,7 +63,7 @@ const interceptor = axiosInstance.interceptors.response.use(
           </a>
 
           <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" className="nav-link px-2 text-secondary">Home</a></li>
+            <li><Link to="/" className="nav-link px-2 text-secondary">Home</Link></li>
             <li><a href="#" className="nav-link px-2 text-white">Features</a></li>
             <li><a href="#" className="nav-link px-2 text-white">Pricing</a></li>
             <li><a href="#" className="nav-link px-2 text-white">FAQs</a></li>
@@ -112,7 +77,7 @@ const interceptor = axiosInstance.interceptors.response.use(
               <Link className="btn btn-outline-light me-2" to="/profile">
                 Profile
               </Link>
-              <button className="btn btn-danger" onClick={handleLogout}>
+              <button className="btn btn-danger" onClick={handleLogoutHeader}>
                 Logout
               </button>
             </div>
@@ -127,15 +92,15 @@ const interceptor = axiosInstance.interceptors.response.use(
             </div>
           )}
 
-          {Role() == 'ADMIN' &&(
+          {Role() == 'ADMIN' && (
             <div className="ml-3">
               <Link className="btn btn-outline-light me-2" to="/admin">
                 Admin Panel
               </Link>
             </div>
           )}
-          
-          {Role() == 'TEACHER' &&(
+
+          {Role() == 'TEACHER' && (
             <div className="ml-3">
               <Link className="btn btn-outline-light me-2" to="/teacher">
                 Teacher Panel

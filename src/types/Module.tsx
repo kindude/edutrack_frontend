@@ -3,5 +3,6 @@ interface Module{
     title: string
     alias: string
     hours_taught: number
+    
 };
 export default Module;

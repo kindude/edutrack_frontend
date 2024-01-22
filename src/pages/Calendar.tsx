@@ -3,6 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import axiosInstance from '../apis/axios_init';
 import User from '../types/User';
+import SuccessAlert from '../components/SuccessAlert';
 
 interface MarkingCalendarProps {
   module_id?: string;
@@ -12,8 +13,10 @@ const MarkingCalendar: React.FC<MarkingCalendarProps> = ({ module_id }) => {
   const [date, setDate] = useState<Date | Date[] | null>(null);
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState<string>('');
   const [mark, setMark] = useState<string | null>(null);
-  const [presense, setPresense] = useState<boolean>(false);
+  let [presense, setPresense] = useState<boolean>(false);
+  const [isAlertOpen, setAlertOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsersInfo = async () => {
@@ -27,6 +30,7 @@ const MarkingCalendar: React.FC<MarkingCalendarProps> = ({ module_id }) => {
     };
     fetchUsersInfo();
   }, []);
+
   const handleDateChange = (value: Date | Date[] | null) => {
     if (Array.isArray(value)) {
       setDate(value[0]);
@@ -39,35 +43,53 @@ const MarkingCalendar: React.FC<MarkingCalendarProps> = ({ module_id }) => {
     setMark(e.target.value);
   };
 
-
   const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedUser(e.target.value);
   };
 
   const handlePresenseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = e.target.value;
-  
     const presenseValue: boolean = selectedValue === 'true';
-  
     setPresense(presenseValue);
   };
 
   const handleSetMark = async () => {
+    if (mark !== 'null') {
+      setPresense(true);
+    }
     const requestData = {
       presence: presense,
       date: date,
       user_id: selectedUser,
-      ...(mark !== 'null' && { mark: mark }), // Include mark only if it's not null
+      ...(mark !== 'null' && { mark: mark }),
       module_id: module_id
     };
-  
-    const response = await axiosInstance.post('/actions/mark', requestData);
+    try {
+      const response = await axiosInstance.post('/actions/mark', requestData);
+      setAlertOpen(true);
+
+      setTimeout(() => {
+        setAlertOpen(false);
+      }, 3000);
+      setError('');
+
+    } catch (error) {
+      setError('A problem occured when setting a mark');
+      console.log(error);
+    };
   };
 
   return (
     <div className="container mx-auto p-8">
+      {isAlertOpen && (
+        <SuccessAlert
+          message="Mark has been submitted successfully"
+          onClose={() => setAlertOpen(false)}
+        />
+      )}
       <h1 className="text-3xl font-bold mb-6">Editable Calendar</h1>
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-col">
+        {error && <p className='text-red-400'>{error}</p>}
         <Calendar
           onChange={handleDateChange as any}
           value={date as any}
@@ -77,7 +99,7 @@ const MarkingCalendar: React.FC<MarkingCalendarProps> = ({ module_id }) => {
           <select
             value={selectedUser}
             onChange={handleUserChange}
-            className="border border-gray-300 rounded p-2"
+            className="border border-gray-300 rounded p-2 mt-2 md:mt-0"
           >
             <option value="">Select User</option>
             {users.map(user => (
@@ -102,7 +124,7 @@ const MarkingCalendar: React.FC<MarkingCalendarProps> = ({ module_id }) => {
             <option value="false">Absent</option>
           </select>
 
-          <button onClick={handleSetMark} className="mt-4 py-2 px-4 bg-blue-500 text-white rounded">
+          <button onClick={handleSetMark} className="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">
             Set Mark
           </button>
         </div>
