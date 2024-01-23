@@ -3,11 +3,12 @@ import axiosInstance from "../apis/axios_init";
 import User from "../types/User";
 import Module from "../types/Module";
 import { Roles } from "../utils/Roles";
+import ModuleUsers from "../types/ModuleUsers";
 
 const EnrollUser: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [selectedUser, setSelectedUser] = useState<string>('');
-    const [modules, setModules] = useState<Module[]>([]);
+    const [modules, setModules] = useState<ModuleUsers[]>([]);
     const [selectedModule, setSelectedModule] = useState<string>('');
     const [selectedRole, setSelectedRole] = useState<string>('');
 
@@ -81,9 +82,9 @@ const EnrollUser: React.FC = () => {
                     className="border border-gray-300 rounded p-2"
                 >
                     <option value="">Select Module</option>
-                    {modules.map(module => (
-                        <option key={module.id} value={module.id}>
-                            {module.title}
+                    {modules.map(entity => (
+                        <option key={entity.module.id} value={entity.module.id}>
+                            {entity.module.title}
                         </option>
                     ))}
                 </select>

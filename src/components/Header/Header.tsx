@@ -43,6 +43,7 @@ const Header: React.FC = () => {
 
           document.cookie = 'refresh_token' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
           axiosInstance.defaults.headers['Authorization'] = `Bearer `;
+          navigate('/');
           window.location.reload();
         }
       } catch (error) {

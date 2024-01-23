@@ -12,14 +12,12 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({ performanceData }) 
     .filter((entry) => entry.day.mark !== null)
     .map((entry) => {
       if (chartMode === 'module') {
-        // Filter by module title
         return {
           date: new Date(entry.day.date).toLocaleDateString(),
           mark: entry.day.mark || 0,
           moduleTitle: entry.module.title,
         };
       } else {
-        // Calculate overall progress
         return {
           date: new Date(entry.day.date).toLocaleDateString(),
           mark: entry.day.mark || 0,
@@ -27,7 +25,6 @@ const PerformanceChart: React.FC<PerformanceChartProps> = ({ performanceData }) 
       }
     });
 
-  // Set up chart data based on the chart mode
   const chartData = chartMode === 'module'
     ? filteredData.reduce((acc: any, entry: any) => {
         if (!acc[entry.moduleTitle]) {
