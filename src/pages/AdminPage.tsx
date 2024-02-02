@@ -3,10 +3,11 @@ import axiosInstance from "../apis/axios_init";
 import User from "../types/User";
 import { Link } from "react-router-dom";
 import Module from "../types/Module";
+import ModuleUsers from "../types/ModuleUsers";
 
 const AdminPage: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
-    const [modules, setModules] = useState<Module[]>([]);
+    const [modules, setModules] = useState<ModuleUsers[]>([]);
     
     useEffect(() => {
         const fetchUsersInfo = async () => {
@@ -52,8 +53,8 @@ const AdminPage: React.FC = () => {
                 <h2 className="text-2xl font-bold mb-2">Module List</h2>
                 <ul>
                     {modules.map((module) => (
-                        <li key={module.id} className="border-b py-2">
-                            <span className="text-lg font-bold">{module.title}</span>
+                        <li key={module.module.id} className="border-b py-2">
+                            <span className="text-lg font-bold">{module.module.title}</span>
                         </li>
                     ))}
                 </ul>

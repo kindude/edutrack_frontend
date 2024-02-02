@@ -7,7 +7,6 @@ const TeacherPage: React.FC = () => {
 
         <div>
 
-            <Link to='/teacher/calendar'>Calendar</Link>
             <Modules></Modules>
         </div>
     )

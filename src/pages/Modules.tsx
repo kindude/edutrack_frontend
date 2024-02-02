@@ -3,6 +3,7 @@ import axiosInstance from "../apis/axios_init";
 import Module from "../types/Module";
 import { Link } from "react-router-dom";
 import ModuleUsers from "../types/ModuleUsers";
+import Role from "../utils/isAdmin";
 
 
 const Modules: React.FC = () => {
@@ -18,8 +19,24 @@ const Modules: React.FC = () => {
           setError('Failed to fetch modules information.');
         }
       };
-  
-      fetchModules();
+
+      const fetchAllModules = async () => {
+        try {
+          const response = await axiosInstance.get('/modules/all');
+          setModules(response.data);
+        } catch (error) {
+          setError('Failed to fetch modules information.');
+        }
+      };
+
+      if(Role() == 'ADMIN'){
+        fetchAllModules();
+      }
+      else{
+        fetchModules();
+      }
+
+
     }, []);
   
     return (

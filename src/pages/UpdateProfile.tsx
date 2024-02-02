@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../apis/axios_init';
-import { useParams } from 'react-router-dom'; // Ensure you have this import
+import { useParams } from 'react-router-dom'; 
 import isAdmin from '../utils/isAdmin';
 
 const UpdateProfile: React.FC = () => {

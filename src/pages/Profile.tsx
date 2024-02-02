@@ -45,10 +45,11 @@ const Profile: React.FC = () => {
 
         const ratingToBase = (average: number | undefined) => {
             if (average !== undefined) {
-                const newRating = (average * 5) / 100;
+                const newRating = parseFloat(((average * 5) / 100).toFixed(2));
                 setAverage(newRating);
             }
         };
+        
 
         const fetchData = async () => {
             await fetchUserInfo();

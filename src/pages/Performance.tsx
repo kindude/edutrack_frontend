@@ -3,6 +3,7 @@ import axiosInstance from "../apis/axios_init";
 import PerformanceChart from "../components/PerformanceChart";
 import Role from "../utils/isAdmin";
 import PerformanceTable from "../components/PerformanceTable";
+import { UserMarks } from "../types/UserMarks";
 
 const Performance: React.FC = () => {
   const [performanceData, setPerformanceData] = useState<any[]>([]);
@@ -17,7 +18,7 @@ const Performance: React.FC = () => {
         let id = localStorage.getItem('id');
         if (id && typeof id === 'string') {
           id = id.replace(/"/g, '');
-          const response = await axiosInstance.get(`/actions/user/${id}/marks`);
+          const response = await axiosInstance.get<UserMarks[]>(`/actions/user/${id}/marks`);
           setPerformanceData(response.data);
           console.log(response.data);
         }
@@ -25,19 +26,19 @@ const Performance: React.FC = () => {
         setError('Failed to fetch performance data.');
       }
     };
-
     const fetchAllMarks = async () => {
       try {
-        const response = await axiosInstance.get(`/actions/users/marks`);
-        setPerformanceData(response.data);
-        console.log(response.data);
+        const response = await axiosInstance.get<UserMarks[]>('/actions/users/marks');
+        const usersMarksWithNonEmptyDays = response.data.filter(user => user.days && user.days.length > 0);
+        console.log(usersMarksWithNonEmptyDays);
+        setPerformanceData(usersMarksWithNonEmptyDays);
       } catch (error) {
         setError('Failed to fetch performance data.');
       }
     };
 
-    if (Role() === 'TEACHER') {
-      // fetchAllMarks();
+    if (Role() === 'ADMIN') {
+      fetchAllMarks();
     }
     if (Role() === 'STUDENT') {
       setText("Student's performance");

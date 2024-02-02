@@ -15,7 +15,8 @@ const MarkingCalendar: React.FC<MarkingCalendarProps> = ({ module_id }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string>('');
   const [mark, setMark] = useState<string | null>(null);
-  let [presense, setPresense] = useState<boolean>(false);
+  const [typeOfMark, setTypeOfMark] = useState<string>(''); // New state for type of mark
+  let [presense, setPresense] = useState<string>('');
   const [isAlertOpen, setAlertOpen] = useState(false);
 
   useEffect(() => {
@@ -49,19 +50,23 @@ const MarkingCalendar: React.FC<MarkingCalendarProps> = ({ module_id }) => {
 
   const handlePresenseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = e.target.value;
-    const presenseValue: boolean = selectedValue === 'true';
-    setPresense(presenseValue);
+    setPresense(selectedValue);
+  };
+
+  const handleTypeOfMarkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTypeOfMark(e.target.value);
   };
 
   const handleSetMark = async () => {
     if (mark !== 'null') {
-      setPresense(true);
+      setPresense('PRESENT');
     }
     const requestData = {
       presence: presense,
       date: date,
       user_id: selectedUser,
-      ...(mark !== 'null' && { mark: mark }),
+      mark: mark,
+      type_of_mark: typeOfMark,
       module_id: module_id
     };
     try {
@@ -114,14 +119,29 @@ const MarkingCalendar: React.FC<MarkingCalendarProps> = ({ module_id }) => {
             onChange={handleMarkChange}
             className="mt-4 border border-gray-300 rounded p-2"
           />
+
           <select
-            value={presense ? 'true' : 'false'}
+            value={typeOfMark}
+            onChange={handleTypeOfMarkChange}
+            className="border border-gray-300 rounded p-2 mt-2 md:mt-0"
+          >
+            <option value="">Select Type Of Mark</option>
+            <option value={'LABMARK'}>
+              Lab work
+            </option>
+            <option value={'COURSEWORK'}>
+              Coursework
+            </option>
+          </select>
+
+          <select
+            value={presense} // Here, use the actual value ('PRESENT' or 'ABSENT')
             onChange={handlePresenseChange}
             className="border border-gray-300 rounded p-2 mt-2"
           >
             <option value="">Present/Absent</option>
-            <option value="true">Present</option>
-            <option value="false">Absent</option>
+            <option value="PRESENT">Present</option>
+            <option value="ABSENT">Absent</option>
           </select>
 
           <button onClick={handleSetMark} className="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">

@@ -10,15 +10,16 @@ const News: React.FC = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axiosInstance.get('/posts/all');
-                setPosts(response.data);
+                const response = await axiosInstance.get<Post[]>('/posts/all');
+                const sortedPosts = response.data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+                setPosts(sortedPosts);
             } catch (error) {
                 setError('A problem occurred while fetching the news');
             }
         };
 
         fetchPosts();
-    }, []);  
+    }, []);
 
     return (
         <div>
