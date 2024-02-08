@@ -6,3 +6,4 @@ export interface UserMarks{
     last_name: string
     days: DayInfo[]
 }
+

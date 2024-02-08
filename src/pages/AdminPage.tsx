@@ -8,7 +8,7 @@ import ModuleUsers from "../types/ModuleUsers";
 const AdminPage: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [modules, setModules] = useState<ModuleUsers[]>([]);
-    
+
     useEffect(() => {
         const fetchUsersInfo = async () => {
             try {
@@ -26,11 +26,11 @@ const AdminPage: React.FC = () => {
                 console.log(error);
             }
         };
-      
+
         fetchUsersInfo();
         fetchModulesInfo();
     }, []);
-      
+
     return (
         <div className="max-w-3xl mx-auto p-6">
             <h1 className="text-3xl font-bold mb-4">Welcome to Admin Page</h1>
@@ -42,22 +42,25 @@ const AdminPage: React.FC = () => {
                     Enroll User
                 </Link>
                 <h2 className="text-2xl font-bold mb-2">User List</h2>
-                <ul>
+                <ul className="border border-gray-300 divide-y divide-gray-300">
                     {users.map((user) => (
-                        <li key={user.id} className="border-b py-2">
-                            <span className="text-lg font-bold">{user.first_name}</span> - <span>{user.email}</span>
+                        <li key={user.id} className="py-3 flex items-center justify-between">
+                            <span className="text-lg font-bold">{user.first_name}</span>
+                            <span className="text-gray-500">{user.email}</span>
                         </li>
                     ))}
                 </ul>
 
-                <h2 className="text-2xl font-bold mb-2">Module List</h2>
-                <ul>
+                <h2 className="text-2xl font-bold my-4">Module List</h2>
+                <ul className="border border-gray-300 divide-y divide-gray-300">
                     {modules.map((module) => (
-                        <li key={module.module.id} className="border-b py-2">
-                            <span className="text-lg font-bold">{module.module.title}</span>
-                        </li>
+                        <li key={module.module.id} className="py-3 flex items-center justify-between">
+                            <span className="text-lg font-bold">
+                                <Link to={`/modules/${module.module.id}`}>{module.module.title}</Link>
+                            </span>                        </li>
                     ))}
                 </ul>
+
             </div>
         </div>
     );

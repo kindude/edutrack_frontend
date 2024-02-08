@@ -62,51 +62,58 @@ const EnrollUser: React.FC = () => {
 
     return (
         <div>
-            <form onSubmit={handleEnroll}>
-                <select
-                    value={selectedUser}
-                    onChange={handleUserChange}
-                    className="border border-gray-300 rounded p-2"
-                >
-                    <option value="">Select User</option>
-                    {users.map(user => (
-                        <option key={user.id} value={user.id}>
-                            {user.first_name} {user.last_name}
-                        </option>
-                    ))}
-                </select>
+            <form onSubmit={handleEnroll} className="max-w-md mx-auto p-4 bg-white shadow-md rounded-lg">
+                <div className="mb-4">
+                    <select
+                        value={selectedUser}
+                        onChange={handleUserChange}
+                        className="border border-gray-300 rounded p-2 w-full"
+                    >
+                        <option value="">Select User</option>
+                        {users.map(user => (
+                            <option key={user.id} value={user.id}>
+                                {user.first_name} {user.last_name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-                <select
-                    value={selectedModule}
-                    onChange={handleModuleChange}
-                    className="border border-gray-300 rounded p-2"
-                >
-                    <option value="">Select Module</option>
-                    {modules.map(entity => (
-                        <option key={entity.module.id} value={entity.module.id}>
-                            {entity.module.title}
-                        </option>
-                    ))}
-                </select>
+                <div className="mb-4">
+                    <select
+                        value={selectedModule}
+                        onChange={handleModuleChange}
+                        className="border border-gray-300 rounded p-2 w-full"
+                    >
+                        <option value="">Select Module</option>
+                        {modules.map(entity => (
+                            <option key={entity.module.id} value={entity.module.id}>
+                                {entity.module.title}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-                <select
-                    value={selectedRole}
-                    onChange={handleRoleChange}
-                    className="border border-gray-300 rounded p-2"
-                >
-                    <option value="">Select Role</option>
-                    {rolesArray.map(role => (
-                        <option key={role} value={role}>
-                            {role}
-                        </option>
-                    ))}
-                </select>
+                <div className="mb-4">
+                    <select
+                        value={selectedRole}
+                        onChange={handleRoleChange}
+                        className="border border-gray-300 rounded p-2 w-full"
+                    >
+                        <option value="">Select Role</option>
+                        {rolesArray.map(role => (
+                            <option key={role} value={role}>
+                                {role}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
                     Enroll User
                 </button>
             </form>
         </div>
+
     );
 };
 

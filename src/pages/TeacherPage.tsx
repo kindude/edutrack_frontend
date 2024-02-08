@@ -6,7 +6,6 @@ const TeacherPage: React.FC = () => {
     return (
 
         <div>
-
             <Modules></Modules>
         </div>
     )

@@ -58,7 +58,7 @@ const Modules: React.FC = () => {
                     <Link to={`/modules/${entity.module.id}`}>{entity.module.title}</Link>
                   </td>
                   <td className="border border-gray-300 p-2">
-                    {entity.users.length > 0 ? (
+                    {entity.users.length > 0 ?  (
                       <ul>
                         {entity.users.map((user, idx) => (
                           <li key={idx}>

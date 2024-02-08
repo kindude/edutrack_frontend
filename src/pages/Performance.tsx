@@ -37,6 +37,21 @@ const Performance: React.FC = () => {
       }
     };
 
+    const fetchTeacherMarks = async () => {
+      try {
+        let id = localStorage.getItem('id');
+        if (id && typeof id === 'string') {
+          id = id.replace(/"/g, '');
+        }
+        const response = await axiosInstance.get<UserMarks[]>(`/actions/users/marks/${id}`);
+        const usersMarksWithNonEmptyDays = response.data.filter(user => user.days && user.days.length > 0);
+        console.log(usersMarksWithNonEmptyDays);
+        setPerformanceData(usersMarksWithNonEmptyDays);
+      } catch (error) {
+        setError('Failed to fetch performance data.');
+      }
+    };
+
     if (Role() === 'ADMIN') {
       fetchAllMarks();
     }
@@ -44,6 +59,12 @@ const Performance: React.FC = () => {
       setText("Student's performance");
       fetchMarks();
     }
+
+    if(Role() === 'TEACHER'){
+      setText('Students performance');
+      fetchTeacherMarks();
+    };
+
   }, []);
 
   const setVisibleChart = () => {

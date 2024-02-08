@@ -1,10 +1,17 @@
-.wrapper {
+html, body, #root {
   height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
+.wrapper {
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
 }
 
 .content {
-  height: 100%;
+  flex: 1; /* Make the content area flex-grow to fill the remaining space */
   display: grid;
   grid-template-columns: 1fr 20fr;
   gap: 0;

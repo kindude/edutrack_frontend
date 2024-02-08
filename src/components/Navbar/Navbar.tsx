@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
     return (
-        <nav className='bg-gray-200 h-screen col-span-1 '>
+        <nav className='bg-gray-200 min-h-screen'>
             <div className="item">
                 <img className="icon" src={require('../../assets/navbar_icons/edutrack.png')} />
                 <div className="text">EduTrack</div>

@@ -3,7 +3,7 @@ nav {
     height: 100%;
     box-sizing: border-box;
     padding: 1rem;
-
+    flex: 1;
     background-color: #ffffff;
     transition: width 0.3s ease-in-out;
     overflow: hidden;

@@ -1,12 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import isLoggedIn from "../../utils/checkToken";
-import isAdmin from "../../utils/isAdmin";
 import React, { useState, useEffect } from 'react';
 import axiosInstance from "../../apis/axios_init";
-import { createBrowserHistory } from "history";
-import CustomError from "../../classes/custom_error";
 import Role from "../../utils/isAdmin";
-import { auth_clientId } from "../../settings";
+import first_name from "../../utils/get_first_name";
 
 const Header: React.FC = () => {
   const [role, setRole] = useState(null);
@@ -16,96 +13,77 @@ const Header: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get('users/me');
-        
+
         if (response && response.data) {
           setRole(response.data.role);
+          localStorage.setItem('first_name', JSON.stringify(response.data.first_name))
           localStorage.setItem('role', JSON.stringify(response.data.role));
           localStorage.setItem('id', JSON.stringify(response.data.id));
         }
       } catch (error: any) {
-      
+
       }
     };
-  
+
     fetchData();
   }, [navigate]);
 
 
   const handleLogoutHeader = async () => {
-      try {
-        const response = await axiosInstance.post('/auth/logout', null, {
-          withCredentials: true,
-        });
-        if (response.status == 200) {
-          localStorage.removeItem('id');
-          localStorage.removeItem('role');
-          localStorage.removeItem('token');
+    try {
+      const response = await axiosInstance.post('/auth/logout', null, {
+        withCredentials: true,
+      });
+      if (response.status == 200) {
+        localStorage.removeItem('id');
+        localStorage.removeItem('role');
+        localStorage.removeItem('token');
 
-          document.cookie = 'refresh_token' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-          axiosInstance.defaults.headers['Authorization'] = `Bearer `;
-          navigate('/');
-          window.location.reload();
-        }
-      } catch (error) {
-        console.log(error);
+        document.cookie = 'refresh_token' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        axiosInstance.defaults.headers['Authorization'] = `Bearer `;
+        navigate('/');
+        window.location.reload();
       }
-      navigate('/');
-      
-    };
+    } catch (error) {
+      console.log(error);
+    }
+    navigate('/');
 
-
+  };
 
   return (
     <header className="p-3 bg-dark text-white">
-      <div className="container">
-        <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <a href="/" className="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-            <svg className="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlinkHref="#bootstrap" /></svg>
-          </a>
-
-          <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><Link to="/" className="nav-link px-2 text-secondary">Home</Link></li>
-            <li><a href="#" className="nav-link px-2 text-white">Features</a></li>
-            <li><a href="#" className="nav-link px-2 text-white">Pricing</a></li>
-            <li><a href="#" className="nav-link px-2 text-white">FAQs</a></li>
-            <li><a href="#" className="nav-link px-2 text-white">About</a></li>
-          </ul>
-          <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-            <input type="search" className="form-control form-control-dark" placeholder="Search..." aria-label="Search" />
-          </form>
+      <div className="container flex justify-between items-center">
+        <div className="flex items-center">
+          <h1>
+            <Link to="/" className="text-decoration-none text-white transition-colors duration-300 hover:text-yellow-300">EduTrack</Link>
+          </h1>
+        </div>
+        <div className="flex items-center">
           {isLoggedIn() ? (
-            <div>
-              <Link className="btn btn-outline-light me-2" to="/profile">
-                Profile
-              </Link>
-              <button className="btn btn-danger" onClick={handleLogoutHeader}>
-                Logout
-              </button>
-            </div>
+            <>
+              <Link className="btn btn-outline-light ml-2" to="/profile">Profile</Link>
+              <button className="btn btn-danger ml-2" onClick={handleLogoutHeader}>Logout</button>
+            </>
           ) : (
-            <div>
-              <Link className="btn btn-outline-light me-2" to="/login">
-                Login
-              </Link>
-              <Link className="btn btn-warning" to="/register">
-                Sign-up
-              </Link>
-            </div>
+            <>
+              <Link className="btn btn-outline-light ml-2" to="/login">Login</Link>
+              <Link className="btn btn-warning ml-2" to="/register">Sign-up</Link>
+            </>
           )}
-
           {Role() == 'ADMIN' && (
             <div className="ml-3">
-              <Link className="btn btn-outline-light me-2" to="/admin">
-                Admin Panel
-              </Link>
+              <Link className="btn btn-outline-light me-2" to="/admin">Admin Panel</Link>
             </div>
           )}
-
           {Role() == 'TEACHER' && (
             <div className="ml-3">
-              <Link className="btn btn-outline-light me-2" to="/teacher">
-                Teacher Panel
-              </Link>
+              <Link className="btn btn-outline-light me-2" to="/teacher">Teacher Panel</Link>
+            </div>
+          )}
+          {isLoggedIn() && (
+            <div className="ml-3 flex items-center">
+              <p className="text-white text-2xl font-semibold pt-2">Welcome, {first_name()}</p>
             </div>
           )}
         </div>
@@ -114,4 +92,3 @@ const Header: React.FC = () => {
   );
 };
 export default Header;
-

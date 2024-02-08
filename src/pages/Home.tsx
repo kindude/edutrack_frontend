@@ -10,7 +10,7 @@ const Home: React.FC = () => {
         <div className="text-center">
           <h1 className="text-3xl font-semibold mb-4 text-gray-800">Welcome back!</h1>
           <p className="text-lg text-gray-600 mb-8">Explore your dashboard and manage your profile.</p>
-          <Link to="/dashboard" className="btn btn-primary mr-4">Go to Dashboard</Link>
+          <Link to="/performance" className="btn btn-primary mr-4">Go to Dashboard</Link>
           <Link to="/profile" className="btn btn-secondary">View Profile</Link>
         </div>
       ) : (

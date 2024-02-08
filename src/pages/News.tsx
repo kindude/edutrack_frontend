@@ -22,7 +22,7 @@ const News: React.FC = () => {
     }, []);
 
     return (
-        <div>
+        <div className="mb-20"> {/* Add margin-bottom to create space between content and footer */}
             {posts && posts.map((post) => (
                 <PostComponent key={post.id} post={post} />
             ))}

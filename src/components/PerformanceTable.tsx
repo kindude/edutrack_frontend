@@ -122,8 +122,7 @@ const PerformanceTable: React.FC<{ performanceData: UserMarks[] }> = ({ performa
       </div>
 
       <div className="mt-4">
-        {/* Buttons to trigger download */}
-        <button className="bg-green-500 text-white py-2 px-4" onClick={downloadXLSX}>
+        <button className="bg-green-500 text-white py-2 px-4 mb-2" onClick={downloadXLSX}>
           Download XLSX
         </button>
       </div>

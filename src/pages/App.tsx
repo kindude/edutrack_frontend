@@ -20,42 +20,50 @@ import EnrollUser from './EnrollUser';
 import UpdateProfile from './UpdateProfile';
 import AddOrEditPost from './AddOrEditPost';
 import News from './News';
+import Forbidden from './Forbidden';
 
 
 
 function App() {
   return (
-    <div className="wrapper">
+      <div>
       <Router>
         <Header />
-        <div className='content'>
+
+        <div className='content '>
           {isLoggedIn() &&
             <Navbar />
           }
-            <div className='pl-10 pt-10 col-start-2'>
-              <Routes>
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path='/modules' element={<Modules />}></Route>
-                <Route path='/admin' element={<AdminPage />}></Route>
-                <Route path='/teacher' element={<TeacherPage />}></Route>
-                <Route path='/modules/:id' element={<ModuleDetails />} />
-                <Route path='/admin/new-module' element={<AddOrEditModule isEdit={false} />} />
-                <Route path='/teacher/calendar' element={<MarkingCalendar />} />
-                <Route path='/performance' element={<Performance />} />
-                <Route path='/admin/modules' element={<AllModules />} />
-                <Route path='/admin/enroll-user' element={<EnrollUser/>} />
-                <Route path='/profile/update/:userId' element={<UpdateProfile/>}/>
-                <Route path='/module/:id/posts/new' element={<AddOrEditPost/>}/>
-                <Route path='/news' element={<News/>}/>
-                <Route path='/' element={<Home/>} />
-              </Routes>
-            </div>
+
+          <div className='pl-10 pt-10 col-start-2'>
+            <Routes>
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/login" element={!isLoggedIn() ? <LoginPage /> : <Forbidden message='You are already logged in' />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path='/modules' element={<Modules />}></Route>
+              <Route path='/admin' element={<AdminPage />}></Route>
+              <Route path='/teacher' element={<TeacherPage />}></Route>
+              <Route path='/modules/:id' element={<ModuleDetails />} />
+              <Route path='/admin/new-module' element={<AddOrEditModule isEdit={false} />} />
+              <Route path='/teacher/calendar' element={<MarkingCalendar />} />
+              <Route path='/performance' element={<Performance />} />
+              <Route path='/admin/modules' element={<AllModules />} />
+              <Route path='/admin/enroll-user' element={<EnrollUser />} />
+              <Route path='/profile/update/:userId' element={<UpdateProfile />} />
+              <Route path='/module/:id/posts/new' element={<AddOrEditPost />} />
+              <Route path='/news' element={<News />} />
+              <Route path='/' element={<Home />} />
+            </Routes>
+
+          </div>
+          
         </div>
-        <Footer />
+        
       </Router>
-    </div>
+      <Footer/>
+      </div>
+
+    
   );
 }
 
