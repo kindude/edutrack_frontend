@@ -1,4 +1,3 @@
-import { User } from "@auth0/auth0-react";
 import { Post } from "../types/Post";
 
 interface PostProps {
