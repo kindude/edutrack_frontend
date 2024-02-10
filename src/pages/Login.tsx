@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import axiosInstance from '../apis/axios_init';
 import { useNavigate } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState<string>('');
-  const { loginWithRedirect } = useAuth0();
-  const { loginWithPopup } = useAuth0();
+  // const { loginWithRedirect } = useAuth0();
+  // const { loginWithPopup } = useAuth0();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -66,9 +66,9 @@ const LoginPage: React.FC = () => {
           <button type="submit" className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             Login
           </button>
-          <button onClick={() => loginWithPopup()} className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2">
+          {/* <button onClick={() => loginWithPopup()} className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2">
             Log In with Google
-          </button>
+          </button> */}
         </form>
       </div>
     </div>
