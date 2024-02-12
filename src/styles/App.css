@@ -10,9 +10,7 @@ html, body, #root {
   flex-direction: column;
 }
 
-.content {
-  flex: 1; /* Make the content area flex-grow to fill the remaining space */
-  display: grid;
-  grid-template-columns: 1fr 20fr;
-  gap: 0;
+ .content {
+    display: grid; 
+
 }

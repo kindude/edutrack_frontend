@@ -53,37 +53,37 @@ const Header: React.FC = () => {
 
   return (
     <header className="p-3 bg-dark text-white">
-      <div className="container flex justify-between items-center">
-        <div className="flex items-center">
+      <div className="container flex flex-col sm:flex-row justify-between items-center">
+        <div className="flex items-center mb-3 sm:mb-0">
           <h1>
             <Link to="/" className="text-decoration-none text-white transition-colors duration-300 hover:text-yellow-300">EduTrack</Link>
           </h1>
         </div>
-        <div className="flex items-center">
+        <div className="flex flex-wrap items-center">
           {isLoggedIn() ? (
             <>
-              <Link className="btn btn-outline-light ml-2" to="/profile">Profile</Link>
-              <button className="btn btn-danger ml-2" onClick={handleLogoutHeader}>Logout</button>
+              <Link className="btn btn-outline-light ml-2 mb-2 sm:mb-0" to="/profile">Profile</Link>
+              <button className="btn btn-danger ml-2 mb-2 sm:mb-0" onClick={handleLogoutHeader}>Logout</button>
             </>
           ) : (
             <>
-              <Link className="btn btn-outline-light ml-2" to="/login">Login</Link>
-              <Link className="btn btn-warning ml-2" to="/register">Sign-up</Link>
+              <Link className="btn btn-outline-light ml-2 mb-2 sm:mb-0" to="/login">Login</Link>
+              <Link className="btn btn-warning ml-2 mb-2 sm:mb-0" to="/register">Sign-up</Link>
             </>
           )}
-          {Role() == 'ADMIN' && (
-            <div className="ml-3">
+          {Role() === 'ADMIN' && (
+            <div className="ml-3 mb-2 sm:mb-0">
               <Link className="btn btn-outline-light me-2" to="/admin">Admin Panel</Link>
             </div>
           )}
-          {Role() == 'TEACHER' && (
-            <div className="ml-3">
+          {Role() === 'TEACHER' && (
+            <div className="ml-3 mb-2 sm:mb-0">
               <Link className="btn btn-outline-light me-2" to="/teacher">Teacher Panel</Link>
             </div>
           )}
           {isLoggedIn() && (
             <div className="ml-3 flex items-center">
-              <p className="text-white text-2xl font-semibold pt-2">Welcome, {first_name()}</p>
+              <p className="text-white text-2xl font-semibold pt-2 sm:pt-0">Welcome, {first_name()}</p>
             </div>
           )}
         </div>

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axiosInstance from '../apis/axios_init';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
+  const { loginWithPopup, isAuthenticated, user } = useAuth0();
 
   const [formData, setFormData] = useState({
     first_name: '',
@@ -83,17 +85,36 @@ const RegisterPage: React.FC = () => {
     console.log('Form data:', formData);
   };
 
+  const handleLoginWithAuth0 = async () => {
+    await loginWithPopup();
+    if (isAuthenticated && user) {
+      try {
+        const response = await axiosInstance.post('/auth/login-auth0', {
+          first_name: user.given_name,
+          last_name: user.family_name,
+          email: user.email
+        });
+
+        localStorage.setItem('token', response.data['token']);
+        navigate('/');
+        window.location.reload();
+      } catch (error) {
+        console.error('Login failed', error);
+      }
+    }
+  };
+
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="bg-gray-200 p-8 rounded-lg w-96">
-        <h1 className="text-center text-3xl font-bold mb-4">Register</h1>
+      <div className="bg-gray-200 p-8 rounded-lg w-full max-w-md text-center">
+        <h1 className="text-3xl font-bold mb-4">Register</h1>
         <form onSubmit={handleRegister} className="space-y-4">
-          <div>
+          <div className="mb-3">
             <label htmlFor="first_name" className="block text-lg font-medium text-gray-700">First Name</label>
             <input
               type="text"
               id="first_name"
-              className="input-field"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               value={formData.first_name}
               onChange={handleInputChange}
             />
@@ -103,7 +124,7 @@ const RegisterPage: React.FC = () => {
             <input
               type="text"
               id="last_name"
-              className="input-field"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               value={formData.last_name}
               onChange={handleInputChange}
             />
@@ -113,7 +134,7 @@ const RegisterPage: React.FC = () => {
             <input
               type="text"
               id="phone_number"
-              className="input-field"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               value={formData.phone_number}
               onChange={handleInputChange}
             />
@@ -123,7 +144,7 @@ const RegisterPage: React.FC = () => {
             <input
               type="text"
               id="city"
-              className="input-field"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               value={formData.city}
               onChange={handleInputChange}
             />
@@ -133,7 +154,7 @@ const RegisterPage: React.FC = () => {
             <input
               type="text"
               id="address"
-              className="input-field"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               value={formData.address}
               onChange={handleInputChange}
             />
@@ -143,7 +164,7 @@ const RegisterPage: React.FC = () => {
             <input
               type="email"
               id="email"
-              className="input-field"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
               value={formData.email}
               onChange={handleInputChange}
             />
@@ -151,17 +172,17 @@ const RegisterPage: React.FC = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="password" className="block text-lg font-medium text-gray-700">Password</label>
-            <div className="input-group">
+            <div className="input-group flex justify-center items-center">
               <input
                 type={formData.showPassword ? 'text' : 'password'}
                 id="password"
-                className="input-field"
+                className="mt-1 mr-2 block w-2/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 value={formData.password}
                 onChange={handleInputChange}
               />
               <button
                 type="button"
-                className="btn-toggle"
+                className="btn-toggle bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
                 onClick={togglePasswordVisibility}
               >
                 {formData.showPassword ? 'Hide' : 'Show'}
@@ -170,30 +191,39 @@ const RegisterPage: React.FC = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="confirmPassword" className="block text-lg font-medium text-gray-700">Confirm Password</label>
-            <div className="input-group">
+            <div className="input-group flex justify-center items-center">
               <input
                 type={formData.showPassword ? 'text' : 'password'}
                 id="confirmPassword"
-                className="input-field"
+                className="mt-1 mr-2 block w-2/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
               />
               <button
                 type="button"
-                className="btn-toggle"
+                className="btn-toggle bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
                 onClick={togglePasswordVisibility}
               >
                 {formData.showPassword ? 'Hide' : 'Show'}
               </button>
             </div>
           </div>
-          <button type="submit" className="btn-primary text-lg bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Register
-          </button>
+          <div className="flex justify-between items-center">
+            <button type="submit" className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Register
+            </button>
+            <button type="submit" className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onClick={handleLoginWithAuth0}>
+              Register with Google
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
+  
+  
+  
+  
 };
 
 export default RegisterPage;

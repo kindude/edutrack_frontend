@@ -4,6 +4,7 @@ import User from "../types/User";
 import Module from "../types/Module";
 import { Roles } from "../utils/Roles";
 import ModuleUsers from "../types/ModuleUsers";
+import SuccessAlert from "../components/SuccessAlert";
 
 const EnrollUser: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -11,6 +12,9 @@ const EnrollUser: React.FC = () => {
     const [modules, setModules] = useState<ModuleUsers[]>([]);
     const [selectedModule, setSelectedModule] = useState<string>('');
     const [selectedRole, setSelectedRole] = useState<string>('');
+    const [isAlertOpen, setAlertOpen] = useState(false);
+    const [error, setError] = useState<string>('');
+
 
     useEffect(() => {
         const fetchUsersInfo = async () => {
@@ -58,10 +62,21 @@ const EnrollUser: React.FC = () => {
         }
 
         const response = await axiosInstance.post('/actions/add', requestData);
+        setAlertOpen(true);
+        setTimeout(() => {
+            setAlertOpen(false);
+        }, 3000);
+        setError('');
     };
 
     return (
         <div>
+            {isAlertOpen && (
+                <SuccessAlert
+                    message="The user has been enrolled successfully"
+                    onClose={() => setAlertOpen(false)}
+                />
+            )}
             <form onSubmit={handleEnroll} className="max-w-md mx-auto p-4 bg-white shadow-md rounded-lg">
                 <div className="mb-4">
                     <select

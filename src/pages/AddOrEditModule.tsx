@@ -35,7 +35,7 @@ const AddOrEditModule: React.FC<AddOrEditModuleProps> = ({ isEdit, moduleId }) =
             } else {
                 // Make a POST request to add a new module
                 const response = await axiosInstance.post('/modules/add', formData);
-                navigate('/admin/modules');
+                navigate('/admin');
 
             }
             // Handle success or any other actions
@@ -54,7 +54,7 @@ const AddOrEditModule: React.FC<AddOrEditModuleProps> = ({ isEdit, moduleId }) =
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-sm mx-auto mt-8">
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 bg-white shadow-md rounded-lg">
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                     Title:

@@ -8,7 +8,7 @@ import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
-// import { Auth0Provider } from '@auth0/auth0-react';
+import { Auth0Provider } from '@auth0/auth0-react';
 import { auth_clientId, auth_domain} from './settings';
 
 const root = ReactDOM.createRoot(
@@ -16,19 +16,19 @@ const root = ReactDOM.createRoot(
 );
 root.render(
 
-  // // <Auth0Provider
-  //   domain={auth_domain}
-  //   clientId={auth_clientId}
-  //   authorizationParams={{
-  //     redirect_uri: window.location.origin
-  //   }}
-  // >   
-  <React.StrictMode>
+  <Auth0Provider
+    domain={auth_domain}
+    clientId={auth_clientId}
+    authorizationParams={{
+      redirect_uri: window.location.origin
+    }}
+  >   
+
 
     <App/>
-    </React.StrictMode>
 
-    // {/* </Auth0Provider>, */}
+
+    </Auth0Provider>,
 
 );
 

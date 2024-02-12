@@ -25,17 +25,19 @@ import Forbidden from './Forbidden';
 
 
 function App() {
+
+  const gridTemplateColumns = isLoggedIn() ? '1fr 20fr' : '1fr';
   return (
       <div>
       <Router>
         <Header />
 
-        <div className='content '>
+        <div className='content' style={{ gridTemplateColumns }}>
           {isLoggedIn() &&
             <Navbar />
           }
 
-          <div className='pl-10 pt-10 col-start-2'>
+          <div className={isLoggedIn() ? 'pl-10 pt-10 col-start-2' : ''}>
             <Routes>
               <Route path="/profile" element={<Profile />} />
               <Route path="/login" element={!isLoggedIn() ? <LoginPage /> : <Forbidden message='You are already logged in' />} />
