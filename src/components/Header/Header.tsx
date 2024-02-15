@@ -7,6 +7,7 @@ import first_name from "../../utils/get_first_name";
 
 const Header: React.FC = () => {
   const [role, setRole] = useState(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -24,6 +25,14 @@ const Header: React.FC = () => {
 
       }
     };
+
+    const currentTime = new Date();
+    setCurrentTime(currentTime);
+
+    const isDayTime = currentTime.getHours() >= 6 && currentTime.getHours() < 18;
+
+    localStorage.setItem('theme', isDayTime ? 'light' : 'dark');
+
 
     fetchData();
   }, [navigate]);

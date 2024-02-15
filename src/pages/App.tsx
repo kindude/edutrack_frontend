@@ -37,7 +37,7 @@ function App() {
             <Navbar />
           }
 
-          <div className={isLoggedIn() ? 'pl-10 pt-10 col-start-2' : ''}>
+          <div className={isLoggedIn() ? 'pl-10 pt-10 col-start-2' : '' }>
             <Routes>
               <Route path="/profile" element={<Profile />} />
               <Route path="/login" element={!isLoggedIn() ? <LoginPage /> : <Forbidden message='You are already logged in' />} />

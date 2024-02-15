@@ -24,7 +24,7 @@ const PerformanceTable: React.FC<{ performanceData: UserMarks[] }> = ({ performa
       const filteredDays = days.filter((day: DayInfo) => {
         const formattedDate = new Date(day.date).toLocaleDateString();
         const moduleTitle = day.module_title;
-        const presence = day.presence ? 'Present' : 'Absent';
+        const presence = day.presence === 'PRESENT' ? 'Present' : (day.presence === 'ABSENT' ? 'Absent' : '');
         const mark = typeof day.mark === 'number' ? day.mark : '';
 
         const isDateMatch = filters.date === '' || formattedDate.includes(filters.date);
@@ -48,7 +48,7 @@ const PerformanceTable: React.FC<{ performanceData: UserMarks[] }> = ({ performa
       return {
         Date: new Date(day.date).toLocaleDateString(),
         'Module Title': day.module_title,
-        Presence: day.presence ? 'Present' : 'Absent',
+        Presence: day.presence == 'PRESENT' ? 'Present' : (day.presence === 'ABSENT' ? 'Absent' : ''),
         Mark: typeof day.mark === 'number' ? day.mark : '',
         'User Name': `${first_name} ${last_name}`,
       };
@@ -75,7 +75,7 @@ const PerformanceTable: React.FC<{ performanceData: UserMarks[] }> = ({ performa
         return {
           Date: new Date(day.date).toLocaleDateString(),
           'Module Title': day.module_title,
-          Presence: day.presence ? 'Present' : 'Absent',
+          Presence: day.presence == 'PRESENT' ? 'Present' : (day.presence === 'ABSENT' ? 'Absent' : ''),
           Mark: typeof day.mark === 'number' ? day.mark : '',
           'User Name': `${first_name} ${last_name}`,
         };
@@ -152,7 +152,7 @@ const PerformanceTable: React.FC<{ performanceData: UserMarks[] }> = ({ performa
                 <tr key={`${index}-${dayIndex}`} className={(index + dayIndex) % 2 === 0 ? 'bg-gray-100' : ''}>
                   <TableCell value={formattedDate} />
                   <TableCell value={moduleTitle} />
-                  <TableCell value={day.presence ? 'Present' : 'Absent'} />
+                  <TableCell value={day.presence == 'PRESENT' ? 'Present' : (day.presence === 'ABSENT' ? 'Absent' : '')} />
                   <TableCell value={typeof day.mark === 'number' ? day.mark : ''} />
                   {(Role() === 'ADMIN' || Role() === 'TEACHER') && (
                     <TableCell value={`${first_name} ${last_name}`} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axiosInstance from '../apis/axios_init';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -34,9 +34,8 @@ const LoginPage: React.FC = () => {
     }
   };
 
-
-  const handleLoginWithAuth0 = async () => {
-    await loginWithPopup();
+  useEffect(  () => {
+    const loginwithAuth = async () => {
     if (isAuthenticated && user) {
       try {
         const response = await axiosInstance.post('/auth/login-auth0', {
@@ -55,6 +54,15 @@ const LoginPage: React.FC = () => {
     } else {
       
     }
+    };
+
+    loginwithAuth();
+  }, [isAuthenticated, user])
+
+
+  const handleLoginWithAuth0 = async () => {
+    await loginWithPopup();
+
   }
 
   return (
